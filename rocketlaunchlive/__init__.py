@@ -9,7 +9,10 @@ _LOGGER = logging.getLogger("rocketlaunchlive")
 BASE_URL = "https://fdo.rocketlaunch.live/json/launches/next/5"
 
 class RocketLaunchLive:
-    def __init__(self, session=None:aiohttp.ClientSession):
+    def __init__(
+        self, 
+        session:aiohttp.ClientSession=None,
+    ):
         """Initialize the session."""
         self.retry = 5
         if not session:
@@ -37,4 +40,3 @@ class RocketLaunchLive:
                 raise ValueError(f"Unknown error in rocketlaunch.live data ({error})")
         else:
             raise ConnectionError("Error getting data from rocketlaunch.live.")
-        
