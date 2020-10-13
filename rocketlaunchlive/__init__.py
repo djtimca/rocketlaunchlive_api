@@ -12,6 +12,7 @@ class RocketLaunchLive:
     def __init__(
         self, 
         session:aiohttp.ClientSession=None,
+        key:str=None,
     ):
         """Initialize the session."""
         self.retry = 5
@@ -19,6 +20,11 @@ class RocketLaunchLive:
             self._session = aiohttp.ClientSession()
         else:
             self._session = session       
+
+        if key != "":
+            self._key = key
+        else:
+            self._key = None
 
     async def close(self):
         """Close the session."""
@@ -28,7 +34,12 @@ class RocketLaunchLive:
         """Get the next launch data from rocketlaunch.live."""
         response = {}
 
-        async with await self._session.get(BASE_URL) as resp:
+        if self._key:
+            request_url = f"{BASE_URL}?key={self._key}"
+        else:
+            request_url = BASE_URL
+
+        async with await self._session.get(request_url) as resp:
             response = await resp.text()
 
         if response is not None:
